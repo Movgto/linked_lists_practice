@@ -61,7 +61,7 @@ int main() {
 
 	while (num != 0) {
 		int op;
-		cout << "--------Menu--------\n\t1. Usuarios\n\t2.Clientes\n\t3.Sucursales\n\t4.Promociones\n";
+		cout << "--------Menu--------\n\t1. Usuarios\n\t2.Clientes\n\t3.Sucursales\n\t4.Promociones\n\t5.Salir\n";
 		cin >> op;
 		switch (op) {
 			case 1: {
@@ -303,6 +303,32 @@ int main() {
 					}
 					_getch();
 					system("cls");
+				}
+				break;
+			}
+			case 5: {
+				cout << "Seguro que deseas salir? S/N...\n";
+				bool exitStatus = true;
+				while (exitStatus) {
+					char exit;
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+					exit = _getch();
+					switch (exit) {
+						case 's':
+
+						case 'S': {
+							num = 0;
+							exitStatus = false;
+							break;
+						}
+						case 'n':
+
+						case 'N': {
+							cout << "Regresando...";
+							exitStatus = false;
+							break;
+						}
+					}
 				}
 				break;
 			}
