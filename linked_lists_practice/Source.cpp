@@ -46,18 +46,20 @@ void mostrarListaCli(Cliente* inicio);
 Usuario* crearCuenta(Usuario* inicio, string username, string name, string psw, string sucursal, bool admin);
 Usuario* iniciarSesion(Usuario* inicio, string username, string psw);
 Cliente* agregarCliente(Cliente* inicio, string name, string email, int phoneNum, string sucursal);
+Sucursal* agregarSucursal(Sucursal* inicio, string name, string dir);
+void mostrarListaSuc(Sucursal* inicio);
 
 int main() {
 	Usuario* inicioUsu = nullptr;
 	Cliente* inicioCli = nullptr;
-	//Sucursal* inicioSuc = nullptr;
+	Sucursal* inicioSuc = nullptr;
 	Promocion* inicioPro = nullptr;
 
 	int num = 1;
 
 	while (num != 0) {
 		int op;
-		cout << "--------Menu--------\n\t1. Usuarios\n\t2.Clientes\n\t3.Sucursales\n\t4.Promociones\n\t5.Limpiar\n";
+		cout << "--------Menu--------\n\t1. Usuarios\n\t2.Clientes\n\t3.Sucursales\n\t4.Promociones\n";
 		cin >> op;
 		switch (op) {
 			case 1: {
@@ -75,8 +77,7 @@ int main() {
 						getline(cin, psw);
 						Usuario* logAttempt = iniciarSesion(inicioUsu, username, psw);
 						if (logAttempt == nullptr) { 
-							cout << "Usuario no registrado o datos incorrectos, presione una tecla para continuar...\n";
-							_getch();
+							cout << "Usuario no registrado o datos incorrectos...\n";
 							break;
 						}
 						cout << "Bienvenido: " << username << endl;
@@ -101,7 +102,7 @@ int main() {
 									break;
 								}
 								case 2: {
-									cout << "Regresando, presione cualquier tecla para continuar...\n";
+									cout << "Regresando...\n";
 									sessionActive = false;
 									break;
 								}
@@ -148,7 +149,6 @@ int main() {
 
 						inicioUsu = crearCuenta(inicioUsu, usr, name, psw, suc, admin);
 						cout << "Cuenta creada exitosamente, presione cualquier tecla para continuar...\n";
-						_getch();
 						break;
 					}
 				}
@@ -182,7 +182,7 @@ int main() {
 							getline(cin, suc);
 
 							inicioCli = agregarCliente(inicioCli, name, email, phoneNum, suc);
-							cout << "Cliente agregado exitosamente, presione una tecla para continuar...\n";
+							cout << "Cliente agregado exitosamente...\n";
 							break;
 						}
 						case 2: {
@@ -195,24 +195,58 @@ int main() {
 						}
 						default: {
 							cout << "Opción invalida, vuelve a intentar...\n";
-							_getch();
 							break;
 						}
 					}
+					_getch();
+					system("cls");
 				}
 				break;
 			}
 			case 3: {
+				bool sucStatus = true;
+				while (sucStatus) { 
+					int a;
+					cout << "1.Agregar sucursal\n2.Ver lista\n3.Volver\n";
+					cin >> a;
+					switch (a) {
+						case 1: {
+							cout << "Nombre: ";
+							string name;
+							cin.ignore();
+							getline(cin, name);
+							cout << "\nDireccion: ";
+							string dir;
+							getline(cin, dir);
+
+							inicioSuc = agregarSucursal(inicioSuc, name, dir);
+
+							cout << "Sucursal agregada exitosamente...\n";
+							break;
+						}
+						case 2: {
+							mostrarListaSuc(inicioSuc);
+							break;
+						}
+						case 3: {
+							cout << "Volviendo...";
+							sucStatus = false;
+							break;
+						}
+					}
+					_getch();
+					system("cls");
+				}
 
 			}
 			case 4: {
 
-			}
-			case 5: {
-				system("cls");
 				break;
 			}
 		}
+		cout << "Presione una tecla para continuar...\n";
+		_getch();
+		system("cls");
 	}
 
 	return 0;
@@ -272,6 +306,30 @@ void mostrarListaCli(Cliente* inicio) {
 	}
 	else{
 		cout << "No hay clientes registrados, presione una tecla para continuar...\n";
-		_getch();
+	}
+}
+
+//Funciones para sucursales
+Sucursal* agregarSucursal(Sucursal* inicio, string name, string dir) {
+	Sucursal* sucursal = new Sucursal();
+	sucursal->name = name;
+	sucursal->dir = dir;
+
+	sucursal->sig = inicio;
+
+	return sucursal;
+}
+
+void mostrarListaSuc(Sucursal* inicio) {
+	if (inicio != nullptr) {
+		for (Sucursal* p = inicio; p != nullptr; p = p->sig) {
+			cout << "Nombre de sucursal: " << p->name << endl;
+			cout << "Direccion: " << p->dir << endl;
+			cout << endl;
+			cout << "Presiona una tecla para continuar...\n";
+		}
+	}
+	else {
+		cout << "No hay sucursales registradas volviendo...";
 	}
 }
