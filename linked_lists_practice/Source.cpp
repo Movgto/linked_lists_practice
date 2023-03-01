@@ -48,6 +48,8 @@ Usuario* iniciarSesion(Usuario* inicio, string username, string psw);
 Cliente* agregarCliente(Cliente* inicio, string name, string email, int phoneNum, string sucursal);
 Sucursal* agregarSucursal(Sucursal* inicio, string name, string dir);
 void mostrarListaSuc(Sucursal* inicio);
+Promocion* agregarProm(Promocion* inicio, string name, int points, int perc, bool status);
+void mostrarListaProm(Promocion* inicio);
 
 int main() {
 	Usuario* inicioUsu = nullptr;
@@ -240,7 +242,68 @@ int main() {
 
 			}
 			case 4: {
+				bool promStatus = true;
+				while (promStatus) {
+					int a;
+					cout << "1.Agregar\n2.Ver lista\n3.Regresar\n";
+					cin >> a;
+					switch (a) {
+						case 1: {
+							cout << "Nombre: ";
+							string name;
+							cin.ignore();
+							getline(cin, name);
+							cout << "\nPuntos requeridos: ";
+							int points;
+							cin >> points;
+							cin.ignore();
+							cout << "\nEstado: ";
+							bool status;
+							cout << "\n1.Activa\n2.Inactiva\n";
+							bool statval = true;
+							while (statval) {
+								int b;
+								cin >> b;
+								switch (b) {
+									case 1: {
+										status = true;
+										statval = false;
+										break;
+									}
+									case 2: {
+										status = false;
+										statval = false;
+										break;
+									}
+									default: {
+										cout << "Opcion no valida, vuelve a intentar...\n";
+										_getch();
+									}
+								}
+							}
 
+							int perc;
+							cout << "Porcentaje de descuento: ";
+							cin >> perc;
+
+							inicioPro = agregarProm(inicioPro, name, points, perc, status);
+
+							cout << "Promocion agregada exitosamente...\n";
+							break;
+						}
+						case 2: {
+							mostrarListaProm(inicioPro);
+							break;
+						}
+						case 3: {
+							promStatus = false;
+							cout << "Regresando...\n";
+							break;
+						}
+					}
+					_getch();
+					system("cls");
+				}
 				break;
 			}
 		}
@@ -264,15 +327,6 @@ Usuario* crearCuenta(Usuario* inicio, string username, string name, string psw, 
 	usuario->sig = inicio;
 	return usuario;
 }
-
-/*void mostrarListaUsu(Usuario* inicio) {
-	if (inicio != nullptr) {
-		cout << "Estos son los elementos en la lista: \n";
-		for (Usuario* p = inicio; p != nullptr; p = p->sig) {
-			cout << "Nombre de usuario: " << p->name << endl;
-		}
-	}
-}*/
 
 Usuario* iniciarSesion(Usuario* inicio, string username, string psw) {
 	for (Usuario* p = inicio; p != nullptr; p = p->sig) {
@@ -309,7 +363,7 @@ void mostrarListaCli(Cliente* inicio) {
 	}
 }
 
-//Funciones para sucursales
+//Funciones para sucursales********************************************************************************
 Sucursal* agregarSucursal(Sucursal* inicio, string name, string dir) {
 	Sucursal* sucursal = new Sucursal();
 	sucursal->name = name;
@@ -331,5 +385,38 @@ void mostrarListaSuc(Sucursal* inicio) {
 	}
 	else {
 		cout << "No hay sucursales registradas volviendo...";
+	}
+}
+
+//Funciones para promociones*******************************************************************************
+Promocion* agregarProm(Promocion* inicio, string name, int points, int perc, bool status) {
+	Promocion* promo = new Promocion();
+	promo->name = name;
+	promo->reqPoints = points;
+	promo->perc = perc;
+	promo->status = status;
+
+	promo->sig = inicio;
+
+	return promo;
+}
+
+void mostrarListaProm(Promocion* inicio) {
+	if (inicio != nullptr) {
+		for (Promocion* p = inicio; p != nullptr; p = p->sig) {
+			cout << "Nombre: " << p->name << endl;
+			cout << "Puntos requeridos: " << p->reqPoints << endl;
+			cout << "Porcentaje: " << p->perc << endl; 
+			cout << "Estado: ";
+			if (p->status) {
+				cout << "Activo\n";
+			}
+			else {
+				cout << "Inactivo\n";
+			}
+		}
+	}
+	else {
+		cout << "No hay promociones registradas...\n";
 	}
 }
