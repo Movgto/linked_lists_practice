@@ -6,24 +6,52 @@ using namespace std;
 
 
 
-struct Nodo {
-	int id;
-	string username;
+struct Usuario {
+	string name;
+	bool admin;
+	string sucursal;
+	string contrasena;
 
-	Nodo* sig;
+	Usuario* sig;
 };
 
-Nodo* agregar(Nodo* inicio, string username);
-void mostrarLista(Nodo* inicio);
+struct Cliente {
+	string name;
+	string sucursal;
+	string email;
+	int points = 0;
+
+	Cliente* sig;
+};
+
+struct Promocion {
+	string name;
+	int reqPoints;
+	int perc;
+	bool status;
+
+	Promocion* sig;
+};
+
+struct Sucursal {
+
+};
+
+
+Usuario* agregar(Usuario* inicio, string name, string sucursal, bool admin, string contrasena);
+void mostrarLista(Usuario* inicio);
 
 int main() {
-	Nodo* inicio = nullptr;
-	Nodo* aux = nullptr;
+	Usuario* inicioUsu = nullptr;
+	Cliente* inicioCli = nullptr;
+	Sucursal* inicioSuc = nullptr;
+	Promocion* inicioPro = nullptr;
+
 	int num = 1;
 
 	while (num != 0) {
 		int op;
-		cout << "-----Menu-----\n\t1. Agregar\n\t2.Mostrar lista\n";
+		cout << "-----Menu-----\n\t1. Usuarios\n\t2.Clientes\n\t3.Sucursales\n\4.Promociones";
 		cin >> op;
 		switch (op) {
 		case 1: {
@@ -49,28 +77,27 @@ int main() {
 	return 0;
 }
 
-Nodo* agregar(Nodo* inicio, string username) {
-	Nodo* numero = new Nodo();
+Usuario* agregar(Usuario* inicio, string name, string sucursal, bool admin) {
+	Usuario* numero = new Usuario();
 	if (inicio == nullptr) {
 		numero->id = 1;
 	}
 	else {
 		numero->id = inicio->id + 1;
 	}
-	numero->username = username;
+	numero->name = name;
 	numero->sig = inicio;
 	return numero;
 }
 
-void mostrarLista(Nodo* inicio) {
+void mostrarLista(Usuario* inicio) {
 	if (inicio != nullptr) {
 		cout << "Estos son los elementos en la lista: \n";
-		for (Nodo* p = inicio; p != nullptr; p = p->sig) {
+		for (Usuario* p = inicio; p != nullptr; p = p->sig) {
 			cout <<"Elemento: " << p->id << endl;
-			cout << "Nombre de usuario: " << p->username << endl;
+			cout << "Nombre de usuario: " << p->name << endl;
 		}
 	}
 }
-
 
 
